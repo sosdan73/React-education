@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+// PureComponent instead of just Component allows not to use shouldComponentUpdate function
 import Person from './Person/Person';
 
-class Persons extends Component {
+class Persons extends PureComponent {
     // static getDerivedStateFromProps(props, state) {
     //     console.log('[Persons.js] getDerivedStateFromProps');        
     //     return state;
@@ -11,10 +12,10 @@ class Persons extends Component {
     //     console.log('[Persons.js] componentWillReceiveProps', props);
     // }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        console.log('[Persons.js] shouldComponentUpdate');
-        return true;
-    }
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     console.log('[Persons.js] shouldComponentUpdate');
+    //     return nextProps.persons !== this.props.persons || nextProps.changed !== this.props.changed || nextProps.clicked !== this.props.clicked;
+    // }
 
     getSnapshotBeforeUpdate(prevProps, prevState) {
         console.log('[Persons.js] getSnapshotBeforeUpdate');
@@ -37,12 +38,14 @@ class Persons extends Component {
     render() {
         console.log('[Persons.js] rendering...');
         return this.props.persons.map((person, index) => {
-            return <Person
-                key={person.id}
-                name={person.name}
-                age={person.age}
-                click={() => this.props.clicked(index)}
-                changed={(event) => this.props.changed(event, person.id)} />
+            return (
+                <Person
+                    key={person.id}
+                    name={person.name}
+                    age={person.age}
+                    click={() => this.props.clicked(index)}
+                    changed={(event) => this.props.changed(event, person.id)} />
+            )
         });
     }
 };
